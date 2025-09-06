@@ -59,6 +59,30 @@ public class usersservices {
             return ResponseEntity.badRequest().body("Invalid password");
         }
         return ResponseEntity.ok("Login successful");
-        
+
+    }
+
+    public ResponseEntity<?> updatepassword(@RequestBody Map<String,Long> request){
+        String email = (String) request.get("email");
+        users user = userReposiratory.findByemail(email);
+        if(user == null){
+            return ResponseEntity.badRequest().body("User not found");
+        }
+        String oldpassword = (String) request.get("oldpassword");
+        if (oldpassword == null){
+            return ResponseEntity.badRequest().body("oldpassword not found");
+            }
+        if(!BCrypt.checkpw(oldpassword, user.getPassword())){
+            return ResponseEntity.badRequest().body("Invalid oldpassword");
+        }
+        String newpassword = (String) request.get("newpassword");
+        if (newpassword == null){
+            return ResponseEntity.badRequest().body("newpassword not found");
+            }
+        String hashednewpassword = BCrypt.hashpw(newpassword, BCrypt.gensalt());
+        user.setPassword(hashednewpassword);
+        userRepository.save(user);
+        return ResponseEntity.ok("Password updated successfully");
+
     }
 }
