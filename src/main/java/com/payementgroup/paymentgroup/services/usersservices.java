@@ -5,7 +5,7 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 import com.paymentgroup.paymentgroup.entity.users;
 import com.paymentgroup.paymentgroup.reposiratory.usersrepo;
-import 
+
 
 @Service
 public class usersservices {
@@ -41,7 +41,7 @@ public class usersservices {
         newuser.setPhone(phone_no);
         userRepository.save(newuser);
         return ResponseEntity.ok("User registered successfully");
-        
+
 
     }
 }
