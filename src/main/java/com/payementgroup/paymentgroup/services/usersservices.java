@@ -5,7 +5,7 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 import com.paymentgroup.paymentgroup.entity.users;
 import com.paymentgroup.paymentgroup.reposiratory.usersrepo;
-import 
+
 
 @Service
 public class usersservices {
@@ -25,10 +25,64 @@ public class usersservices {
 
         String password = (String) entity.get("password");
         if (password != null){
-            return ResponseEntity.badrequest().body("password not found");
+            return ResponseEntity.badRequest().body("password not found");
+            }
+        hashedpassword = BCrypt.hashpw(password, BCrypt.gensalt());
+        String name = (String) entity.get("name");
+        if (name != null){
+            return ResponseEntity.badRequest().body("name not found");
+            }
+        int phone_no = (int) entity.get("phone_no");
+        
+        users newuser = new users();
+        newuser.setEmail(email);
+        newuser.setPassword(hashedpassword);
+        newuser.setName(name);
+        newuser.setPhone(phone_no);
+        userRepository.save(newuser);
+        return ResponseEntity.ok("User registered successfully");
 
+
+    }
+
+    public ResponseEntity<?> login(@RequestBody Map<String,Long> request){
+        String email = (String) request.get("email");
+        users user = userReposiratory.findByemail(email);
+        if(user == null){
+            return ResponseEntity.badRequest().body("User not found");
         }
+        String password = (String) request.get("password");
+        if (password == null){
+            return ResponseEntity.badRequest().body("password not found");
+            }
+        if(!BCrypt.checkpw(password, user.getPassword())){
+            return ResponseEntity.badRequest().body("Invalid password");
+        }
+        return ResponseEntity.ok("Login successful");
 
+    }
+
+    public ResponseEntity<?> updatepassword(@RequestBody Map<String,Long> request){
+        String email = (String) request.get("email");
+        users user = userReposiratory.findByemail(email);
+        if(user == null){
+            return ResponseEntity.badRequest().body("User not found");
+        }
+        String oldpassword = (String) request.get("oldpassword");
+        if (oldpassword == null){
+            return ResponseEntity.badRequest().body("oldpassword not found");
+            }
+        if(!BCrypt.checkpw(oldpassword, user.getPassword())){
+            return ResponseEntity.badRequest().body("Invalid oldpassword");
+        }
+        String newpassword = (String) request.get("newpassword");
+        if (newpassword == null){
+            return ResponseEntity.badRequest().body("newpassword not found");
+            }
+        String hashednewpassword = BCrypt.hashpw(newpassword, BCrypt.gensalt());
+        user.setPassword(hashednewpassword);
+        userRepository.save(user);
+        return ResponseEntity.ok("Password updated successfully");
 
     }
 }
