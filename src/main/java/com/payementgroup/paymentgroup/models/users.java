@@ -1,4 +1,6 @@
 package com.payementgroup.paymentgroup.models;
+import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
+import java.util.ArrayList;
 import jakarta.persistence.*;
 import lombok.ToString;
 
@@ -12,6 +14,9 @@ public class users {
     private String email;
     private String password;
     private int phone_no;
+
+    @ManyToMany(mappedBy = "User")
+    private ArrayList<groups> Group = new ArrayList<>();
 
     public users(Long id, String name, String email, String password, int phone_no){
         this.id = id;
@@ -63,13 +68,13 @@ public class users {
     
    
     public String ToString(){
-        return "user{"+
+        return "user["+
         "id : "+id+
         " name : "+name+
         "email : "+email+
         " password : "+password+
         " phone_no : "+ phone_no +
-        '}';
+        ']';
     }
 }
 
