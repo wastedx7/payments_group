@@ -69,7 +69,7 @@ public class users {
         "email : "+email+
         " password : "+password+
         " phone_no : "+ phone_no +
-        '}'
+        '}';
     }
 }
 
