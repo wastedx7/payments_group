@@ -84,5 +84,5 @@ public class usersservices {
         userRepository.save(user);
         return ResponseEntity.ok("Password updated successfully");
 
-    }
+    };
 }
