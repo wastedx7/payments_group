@@ -8,5 +8,5 @@ public class groups {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String groupName;
-    private 
+    private users user;
 }

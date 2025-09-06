@@ -25,10 +25,23 @@ public class usersservices {
 
         String password = (String) entity.get("password");
         if (password != null){
-            return ResponseEntity.badrequest().body("password not found");
-
-        }
-
+            return ResponseEntity.badRequest().body("password not found");
+            }
+        hashedpassword = BCrypt.hashpw(password, BCrypt.gensalt());
+        String name = (String) entity.get("name");
+        if (name != null){
+            return ResponseEntity.badRequest().body("name not found");
+            }
+        int phone_no = (int) entity.get("phone_no");
+        
+        users newuser = new users();
+        newuser.setEmail(email);
+        newuser.setPassword(hashedpassword);
+        newuser.setName(name);
+        newuser.setPhone(phone_no);
+        userRepository.save(newuser);
+        return ResponseEntity.ok("User registered successfully");
+        
 
     }
 }
