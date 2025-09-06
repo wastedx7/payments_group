@@ -44,4 +44,21 @@ public class usersservices {
 
 
     }
+
+    public ResponseEntity<?> login(@RequestBody Map<String,Long> request){
+        String email = (String) request.get("email");
+        users user = userReposiratory.findByemail(email);
+        if(user == null){
+            return ResponseEntity.badRequest().body("User not found");
+        }
+        String password = (String) request.get("password");
+        if (password == null){
+            return ResponseEntity.badRequest().body("password not found");
+            }
+        if(!BCrypt.checkpw(password, user.getPassword())){
+            return ResponseEntity.badRequest().body("Invalid password");
+        }
+        return ResponseEntity.ok("Login successful");
+        
+    }
 }
