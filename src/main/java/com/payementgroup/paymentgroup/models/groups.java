@@ -1,4 +1,5 @@
 package com.payementgroup.paymentgroup.models;
+import java.util.ArrayList;
 import java.util.List;
 import jakarta.persistence.*;
 
@@ -7,12 +8,16 @@ public class groups {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String groupName;
     private String entryPass;
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "Group_users", joinColumns = @JoinColumn(name = "group_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
-    private List<users> User ;
+    private List<users> User = new ArrayList<>();
+
+    @OneToMany(mappedBy = "groups")
+    private ArrayList<expenses> Expense = new ArrayList<>();
 
     public groups(Long id, String groupName, String entryPass){
         this.id = id;

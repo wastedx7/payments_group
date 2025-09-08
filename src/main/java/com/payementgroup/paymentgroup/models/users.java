@@ -10,6 +10,7 @@ public class users {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    
     private String name;
     private String email;
     private String password;
@@ -17,6 +18,9 @@ public class users {
 
     @ManyToMany(mappedBy = "User")
     private ArrayList<groups> Group = new ArrayList<>();
+
+    @OneToMany(mappedBy = "paidBy")
+    private ArrayList<expenses> Expense = new ArrayList<>();
 
     public users(Long id, String name, String email, String password, int phone_no){
         this.id = id;
@@ -73,8 +77,7 @@ public class users {
         " name : "+name+
         "email : "+email+
         " password : "+password+
-        " phone_no : "+ phone_no +
-        ']';
+        " phone_no : "+ phone_no +']';
     }
 }
 
